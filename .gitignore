@@ -1,0 +1,7 @@
+.*
+/build
+!/.clang-format
+!/.clang-tidy
+!/.editorconfig
+!/.gitattributes
+!/.gitignore
