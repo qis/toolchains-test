@@ -16,13 +16,13 @@ get_filename_component(UTF8PROC_LIBRARY_NAME ${UTF8PROC_LIBRARY} NAME_WE)
 if(UTF8PROC_LIBRARY_NAME STREQUAL utf8proc_static)
   set(UTF8PROC_DEFINITIONS UTF8PROC_STATIC=1)
 else()
-  set(UTF8PROC_DEFINITIONS)
+  set(UTF8PROC_DEFINITIONS "")
 endif()
-find_package_handle_standard_args(UTF8PROC DEFAULT_MSG UTF8PROC_INCLUDE_DIR UTF8PROC_LIBRARY UTF8PROC_DEFINITIONS)
+find_package_handle_standard_args(UTF8PROC DEFAULT_MSG UTF8PROC_INCLUDE_DIR UTF8PROC_LIBRARY)
 
-target_compile_definitions(${PROJECT_NAME} PRIVATE ${UTF8PROC_DEFINITIONS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${UTF8PROC_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${UTF8PROC_LIBRARY})
+target_compile_definitions(${PROJECT_NAME} PUBLIC ${UTF8PROC_DEFINITIONS})
+target_include_directories(${PROJECT_NAME} PUBLIC ${UTF8PROC_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} PUBLIC ${UTF8PROC_LIBRARY})
 
 # =============================================================================
 
