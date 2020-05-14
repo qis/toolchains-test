@@ -4,30 +4,46 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 # =============================================================================
 
-get_property(multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(multi_config)
-  message(FATAL_ERROR "Multi-config generators are not supported.")
-endif()
+find_path(UTF8PROC_INCLUDE_DIR utf8proc.h)
+get_filename_component(UTF8PROC_ROOT_DIR ${UTF8PROC_INCLUDE_DIR} DIRECTORY)
+
+find_library(UTF8PROC_LIBRARY_DEBUG NAMES utf8proc utf8proc_static
+  NAMES_PER_DIR NO_CMAKE_PATH PATHS ${UTF8PROC_ROOT_DIR}/debug/lib)
+
+find_library(UTF8PROC_LIBRARY_RELEASE NAMES utf8proc utf8proc_static
+  NAMES_PER_DIR NO_CMAKE_PATH PATHS ${UTF8PROC_ROOT_DIR}/lib)
 
 include(FindPackageHandleStandardArgs)
-find_path(UTF8PROC_INCLUDE_DIR utf8proc.h)
-find_library(UTF8PROC_LIBRARY NAMES utf8proc utf8proc_static)
-get_filename_component(UTF8PROC_LIBRARY_NAME ${UTF8PROC_LIBRARY} NAME_WE)
-if(UTF8PROC_LIBRARY_NAME STREQUAL utf8proc_static)
-  set(UTF8PROC_DEFINITIONS UTF8PROC_STATIC=1)
-else()
-  set(UTF8PROC_DEFINITIONS "")
-endif()
-find_package_handle_standard_args(UTF8PROC DEFAULT_MSG UTF8PROC_INCLUDE_DIR UTF8PROC_LIBRARY)
+find_package_handle_standard_args(UTF8PROC DEFAULT_MSG
+  UTF8PROC_INCLUDE_DIR UTF8PROC_LIBRARY_DEBUG UTF8PROC_LIBRARY_RELEASE)
 
-target_compile_definitions(${PROJECT_NAME} PUBLIC ${UTF8PROC_DEFINITIONS})
-target_include_directories(${PROJECT_NAME} PUBLIC ${UTF8PROC_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PUBLIC ${UTF8PROC_LIBRARY})
+add_library(utf8proc::utf8proc UNKNOWN IMPORTED)
+set_target_properties(utf8proc::utf8proc PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${UTF8PROC_INCLUDE_DIR}"
+  IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+  IMPORTED_CONFIGURATIONS "DEBUG;RELEASE"
+  MAP_IMPORTED_CONFIG_MINSIZEREL Release
+  MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release
+  IMPORTED_LOCATION_DEBUG "${UTF8PROC_LIBRARY_DEBUG}"
+  IMPORTED_LOCATION_RELEASE "${UTF8PROC_LIBRARY_RELEASE}")
+
+get_filename_component(UTF8PROC_LIBRARY_NAME_DEBUG ${UTF8PROC_LIBRARY_DEBUG} NAME_WE)
+if(UTF8PROC_LIBRARY_NAME_DEBUG STREQUAL "utf8proc_static")
+  set_property(TARGET utf8proc::utf8proc APPEND PROPERTY
+    INTERFACE_COMPILE_DEFINITIONS "$<$<CONFIG:Debug>:UTF8PROC_STATIC=1>")
+endif()
+
+get_filename_component(UTF8PROC_LIBRARY_NAME_RELEASE ${UTF8PROC_LIBRARY_RELEASE} NAME_WE)
+if(UTF8PROC_LIBRARY_NAME_RELEASE STREQUAL "utf8proc_static")
+  set_property(TARGET utf8proc::utf8proc APPEND PROPERTY
+    INTERFACE_COMPILE_DEFINITIONS "$<$<CONFIG:Release>:UTF8PROC_STATIC=1>")
+endif()
+
+target_link_libraries(${PROJECT_NAME} PRIVATE utf8proc::utf8proc)
 
 # =============================================================================
 
-check_includes(${UTF8PROC_INCLUDE_DIR})
-check_libraries(${UTF8PROC_LIBRARY})
+check_targets(utf8proc::utf8proc)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Catch2::Catch2)
 target_compile_definitions(${PROJECT_NAME} PRIVATE CATCH_CONFIG_MAIN)

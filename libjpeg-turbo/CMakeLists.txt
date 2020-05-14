@@ -4,27 +4,34 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 # =============================================================================
 
-get_property(multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if(multi_config)
-  message(FATAL_ERROR "Multi-config generators are not supported.")
-endif()
+find_path(TURBOJPEG_INCLUDE_DIR turbojpeg.h)
+get_filename_component(TURBOJPEG_ROOT_DIR ${TURBOJPEG_INCLUDE_DIR} DIRECTORY)
+
+find_library(TURBOJPEG_LIBRARY_DEBUG NAMES turbojpeg turbojpegd
+  NAMES_PER_DIR NO_CMAKE_PATH PATHS ${TURBOJPEG_ROOT_DIR}/debug/lib)
+
+find_library(TURBOJPEG_LIBRARY_RELEASE NAMES turbojpeg
+  NAMES_PER_DIR NO_CMAKE_PATH PATHS ${TURBOJPEG_ROOT_DIR}/lib)
 
 include(FindPackageHandleStandardArgs)
-find_path(TURBOJPEG_INCLUDE_DIR utf8proc.h)
-if(WIN32 AND CMAKE_BUILD_TYPE MATCHES Debug)
-  find_library(TURBOJPEG_LIBRARY NAMES turbojpegd)
-else()
-  find_library(TURBOJPEG_LIBRARY NAMES turbojpeg)
-endif()
-find_package_handle_standard_args(TURBOJPEG DEFAULT_MSG TURBOJPEG_INCLUDE_DIR TURBOJPEG_LIBRARY)
+find_package_handle_standard_args(TURBOJPEG DEFAULT_MSG
+  TURBOJPEG_INCLUDE_DIR TURBOJPEG_LIBRARY_DEBUG TURBOJPEG_LIBRARY_RELEASE)
 
-target_include_directories(${PROJECT_NAME} PRIVATE ${TURBOJPEG_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${TURBOJPEG_LIBRARY})
+add_library(turbojpeg::turbojpeg UNKNOWN IMPORTED)
+set_target_properties(turbojpeg::turbojpeg PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${TURBOJPEG_INCLUDE_DIR}"
+  IMPORTED_LINK_INTERFACE_LANGUAGES "C"
+  IMPORTED_CONFIGURATIONS "DEBUG;RELEASE"
+  MAP_IMPORTED_CONFIG_MINSIZEREL Release
+  MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release
+  IMPORTED_LOCATION_DEBUG "${TURBOJPEG_LIBRARY_DEBUG}"
+  IMPORTED_LOCATION_RELEASE "${TURBOJPEG_LIBRARY_RELEASE}")
+
+target_link_libraries(${PROJECT_NAME} PRIVATE turbojpeg::turbojpeg)
 
 # =============================================================================
 
-check_includes(${TURBOJPEG_INCLUDE_DIR})
-check_libraries(${TURBOJPEG_LIBRARY})
+check_targets(turbojpeg::turbojpeg)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Catch2::Catch2)
 target_compile_definitions(${PROJECT_NAME} PRIVATE CATCH_CONFIG_MAIN)
