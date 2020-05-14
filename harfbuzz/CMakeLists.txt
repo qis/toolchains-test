@@ -7,10 +7,6 @@ add_executable(${PROJECT_NAME} main.cpp)
 find_package(harfbuzz CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE harfbuzz::harfbuzz)
 
-if(MSVC)
-  target_compile_options(${PROJECT_NAME} PRIVATE /wd4172)
-endif()
-
 # =============================================================================
 
 check_targets(harfbuzz::harfbuzz)
