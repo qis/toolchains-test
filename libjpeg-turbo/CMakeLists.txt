@@ -4,19 +4,27 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 # =============================================================================
 
-find_path(LIBJPEG_TURBO_INCLUDE_DIR turbojpeg.h)
-if(WIN32 AND CMAKE_BUILD_TYPE MATCHES Debug)
-  find_library(LIBJPEG_TURBO_LIBRARY NAMES turbojpegd)
-else()
-  find_library(LIBJPEG_TURBO_LIBRARY NAMES turbojpeg)
+get_property(multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if(multi_config)
+  message(FATAL_ERROR "Multi-config generators are not supported.")
 endif()
-target_include_directories(${PROJECT_NAME} PRIVATE ${LIBJPEG_TURBO_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LIBJPEG_TURBO_LIBRARY})
+
+include(FindPackageHandleStandardArgs)
+find_path(TURBOJPEG_INCLUDE_DIR utf8proc.h)
+if(WIN32 AND CMAKE_BUILD_TYPE MATCHES Debug)
+  find_library(TURBOJPEG_LIBRARY NAMES turbojpegd)
+else()
+  find_library(TURBOJPEG_LIBRARY NAMES turbojpeg)
+endif()
+find_package_handle_standard_args(TURBOJPEG DEFAULT_MSG TURBOJPEG_INCLUDE_DIR TURBOJPEG_LIBRARY)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${TURBOJPEG_INCLUDE_DIR})
+target_link_libraries(${PROJECT_NAME} PRIVATE ${TURBOJPEG_LIBRARY})
 
 # =============================================================================
 
-check_includes(${LIBJPEG_TURBO_INCLUDE_DIR})
-check_libraries(${LIBJPEG_TURBO_LIBRARY})
+check_includes(${TURBOJPEG_INCLUDE_DIR})
+check_libraries(${TURBOJPEG_LIBRARY})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE Catch2::Catch2)
 target_compile_definitions(${PROJECT_NAME} PRIVATE CATCH_CONFIG_MAIN)
