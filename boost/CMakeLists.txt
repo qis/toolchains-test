@@ -4,7 +4,7 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 # =============================================================================
 
-find_package(Boost REQUIRED COMPONENTS headers filesystem)
+find_package(Boost 1.73.0 REQUIRED COMPONENTS headers filesystem)
 target_link_libraries(${PROJECT_NAME} PRIVATE Boost::headers Boost::filesystem)
 target_compile_definitions(${PROJECT_NAME} PRIVATE
   BOOST_ASIO_HAS_CO_AWAIT

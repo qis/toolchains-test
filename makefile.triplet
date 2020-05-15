@@ -6,7 +6,7 @@ all/linux:
 	@cmake -E remove -f build/$(triplet)-release.log
 	@cmake -G "Ninja Multi-Config" \
 	  -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
-	  -DCMAKE_TOOLCHAIN_FILE="$(CURDIR)/toolchain.cmake" \
+	  -DCMAKE_TOOLCHAIN_FILE="/opt/vcpkg/triplets/toolchains/res/toolchain.cmake" \
 	  -DCMAKE_VERBOSE_MAKEFILE=ON \
 	  -B build/$(triplet)
 	@cmake -E echo "Building $(triplet) [debug] ..."
@@ -20,12 +20,12 @@ all/windows:
 	@cmake -E remove -f build/$(triplet)-release.log
 	@cmake -G "Ninja Multi-Config" \
 	  -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
-	  -DCMAKE_TOOLCHAIN_FILE="$(MAKEDIR)\toolchain.cmake" \
+	  -DCMAKE_TOOLCHAIN_FILE="C:\Workspace\vcpkg\triplets\toolchains\res\toolchain.cmake" \
 	  -DCMAKE_VERBOSE_MAKEFILE=ON \
 	  -B build/$(triplet)
-	@cmake -E echo "Building $(triplet) (debug) ..."
+	@cmake -E echo "Building $(triplet) [debug] ..."
 	@cmake --build build/$(triplet) --config Debug > build\$(triplet)-debug.log
-	@cmake -E echo "Building $(triplet) (release) ..."
+	@cmake -E echo "Building $(triplet) [release] ..."
 	@cmake --build build/$(triplet) --config Release > build\$(triplet)-release.log
 
 run:

@@ -4,12 +4,8 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 # =============================================================================
 
-find_package(libpng CONFIG REQUIRED)
-if(TARGET png)
-  target_link_libraries(${PROJECT_NAME} PRIVATE png)
-else()
-  target_link_libraries(${PROJECT_NAME} PRIVATE png_static)
-endif()
+find_package(PNG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE PNG::PNG)
 
 # =============================================================================
 
