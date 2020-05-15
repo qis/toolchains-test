@@ -1,61 +1,43 @@
 system = linux
-triplet = $(VCPKG_DEFAULT_TRIPLET)
 
 all: all/$(system)
 
-all/linux: clean
-	@cmake -GNinja -DCMAKE_BUILD_TYPE=Debug \
-	  -DCMAKE_TOOLCHAIN_FILE="$(CURDIR)/toolchain.cmake" \
-	  -B build/$(triplet)/debug
-	@cmake -GNinja -DCMAKE_BUILD_TYPE=Release \
-	  -DCMAKE_TOOLCHAIN_FILE="$(CURDIR)/toolchain.cmake" \
-	  -B build/$(triplet)/release
-	@cmake --build build/$(triplet)/debug
-	@cmake --build build/$(triplet)/release
+all/linux:
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-linux
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-linux-llvm
 
-all/windows: clean
-	@cmake -GNinja -DCMAKE_BUILD_TYPE=Debug \
-	  -DCMAKE_TOOLCHAIN_FILE="$(MAKEDIR)\toolchain.cmake" \
-	  -B build/$(triplet)/debug
-	@cmake -GNinja -DCMAKE_BUILD_TYPE=Release \
-	  -DCMAKE_TOOLCHAIN_FILE="$(MAKEDIR)\toolchain.cmake" \
-	  -B build/$(triplet)/release
-	@cmake --build build/$(triplet)/debug
-	@cmake --build build/$(triplet)/release
+all/windows:
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows-static
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows-msvc
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows-llvm
 
-run:
-	@cmake -E chdir build/$(triplet)/release benchmark/vcpkg-test-benchmark
-	@cmake -E chdir build/$(triplet)/debug ctest
-	@cmake -E chdir build/$(triplet)/release ctest
+install: install/$(system)
 
-install:
-	@vcpkg install --overlay-ports=$(overlay) \
-	  benchmark:$(triplet) \
-	  catch2:$(triplet) \
-	  openssl:$(triplet) \
-	  bzip2:$(triplet) \
-	  liblzma:$(triplet) \
-	  libzip:$(triplet) \
-	  lz4:$(triplet) \
-	  zlib:$(triplet) \
-	  zstd:$(triplet) \
-	  date:$(triplet) \
-	  fmt:$(triplet) \
-	  libssh2:$(triplet) \
-	  pugixml:$(triplet) \
-	  spdlog:$(triplet) \
-	  utf8proc:$(triplet) \
-	  giflib:$(triplet) \
-	  libjpeg-turbo:$(triplet) \
-	  libpng:$(triplet) \
-	  tiff:$(triplet) \
-	  freetype:$(triplet) \
-	  harfbuzz:$(triplet) \
-	  boost:$(triplet) \
-	  tbb:$(triplet)
+install/linux:
+	@$(MAKE) -f makefile.triplet system=$(system) overlay=/opt/ports triplet=x64-linux install
+	@$(MAKE) -f makefile.triplet system=$(system) overlay=/opt/ports triplet=x64-linux-llvm install
+
+install/windows:
+	@$(MAKE) -f makefile.triplet system=$(system) overlay=C:\Workspace\ports triplet=x64-windows install
+	@$(MAKE) -f makefile.triplet system=$(system) overlay=C:\Workspace\ports triplet=x64-windows-static install
+	@$(MAKE) -f makefile.triplet system=$(system) overlay=C:\Workspace\ports triplet=x64-windows-msvc install
+	@$(MAKE) -f makefile.triplet system=$(system) overlay=C:\Workspace\ports triplet=x64-windows-llvm install
+
+run: run/$(system)
+
+run/linux:
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-linux run
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-linux-llvm run
+
+run/windows:
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows run
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows-static run
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows-msvc run
+	@$(MAKE) -f makefile.triplet system=$(system) triplet=x64-windows-llvm run
 
 format:
 	@cmake -P format.cmake
 
 clean:
-	@cmake -E remove_directory build/$(triplet)
+	@cmake -E remove_directory build

@@ -1,9 +1,6 @@
 cmake_minimum_required(VERSION 3.17 FATAL_ERROR)
 project(tests LANGUAGES C CXX)
 
-list(INSERT CMAKE_MODULE_PATH 0 ${CMAKE_CURRENT_LIST_DIR})
-include(check)
-
 find_package(Catch2 CONFIG REQUIRED)
 
 include(CTest)

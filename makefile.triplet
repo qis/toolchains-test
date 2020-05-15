@@ -1,0 +1,60 @@
+all: all/$(system)
+
+all/linux:
+	@cmake -E remove_directory build/$(triplet)
+	@cmake -E remove -f build/$(triplet)-debug.log
+	@cmake -E remove -f build/$(triplet)-release.log
+	@cmake -G "Ninja Multi-Config" \
+	  -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
+	  -DCMAKE_TOOLCHAIN_FILE="$(CURDIR)/toolchain.cmake" \
+	  -DCMAKE_VERBOSE_MAKEFILE=ON \
+	  -B build/$(triplet)
+	@cmake -E echo "Building $(triplet) [debug] ..."
+	@cmake --build build/$(triplet) --config Debug > build/$(triplet)-debug.log
+	@cmake -E echo "Building $(triplet) [release] ..."
+	@cmake --build build/$(triplet) --config Release > build/$(triplet)-release.log
+
+all/windows:
+	@cmake -E remove_directory build/$(triplet)
+	@cmake -E remove -f build/$(triplet)-debug.log
+	@cmake -E remove -f build/$(triplet)-release.log
+	@cmake -G "Ninja Multi-Config" \
+	  -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
+	  -DCMAKE_TOOLCHAIN_FILE="$(MAKEDIR)\toolchain.cmake" \
+	  -DCMAKE_VERBOSE_MAKEFILE=ON \
+	  -B build/$(triplet)
+	@cmake -E echo "Building $(triplet) (debug) ..."
+	@cmake --build build/$(triplet) --config Debug > build\$(triplet)-debug.log
+	@cmake -E echo "Building $(triplet) (release) ..."
+	@cmake --build build/$(triplet) --config Release > build\$(triplet)-release.log
+
+run:
+	@cmake -E chdir build/$(triplet) benchmark/Release/vcpkg-test-benchmark
+	@cmake -E chdir build/$(triplet) ctest --config Debug
+	@cmake -E chdir build/$(triplet) ctest --config Release
+
+install:
+	@vcpkg install --overlay-ports=$(overlay) \
+	  benchmark:$(triplet) \
+	  catch2:$(triplet) \
+	  openssl:$(triplet) \
+	  bzip2:$(triplet) \
+	  liblzma:$(triplet) \
+	  libzip:$(triplet) \
+	  lz4:$(triplet) \
+	  zlib:$(triplet) \
+	  zstd:$(triplet) \
+	  date:$(triplet) \
+	  fmt:$(triplet) \
+	  libssh2:$(triplet) \
+	  pugixml:$(triplet) \
+	  spdlog:$(triplet) \
+	  utf8proc:$(triplet) \
+	  giflib:$(triplet) \
+	  libjpeg-turbo:$(triplet) \
+	  libpng:$(triplet) \
+	  tiff:$(triplet) \
+	  freetype:$(triplet) \
+	  harfbuzz:$(triplet) \
+	  boost:$(triplet) \
+	  tbb:$(triplet)
