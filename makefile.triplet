@@ -7,6 +7,7 @@ all/linux:
 	@cmake -G "Ninja Multi-Config" \
 	  -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
 	  -DCMAKE_TOOLCHAIN_FILE="/opt/vcpkg/triplets/toolchains/res/toolchain.cmake" \
+	  -DVCPKG_TARGET_TRIPLET="$(triplet)" \
 	  -DCMAKE_VERBOSE_MAKEFILE=ON \
 	  -B build/$(triplet)
 	@cmake -E echo "Building $(triplet) [debug] ..."
@@ -21,6 +22,7 @@ all/windows:
 	@cmake -G "Ninja Multi-Config" \
 	  -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
 	  -DCMAKE_TOOLCHAIN_FILE="C:\Workspace\vcpkg\triplets\toolchains\res\toolchain.cmake" \
+	  -DVCPKG_TARGET_TRIPLET="$(triplet)" \
 	  -DCMAKE_VERBOSE_MAKEFILE=ON \
 	  -B build/$(triplet)
 	@cmake -E echo "Building $(triplet) [debug] ..."
