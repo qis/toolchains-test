@@ -1,5 +1,4 @@
 @echo off
-
 if "%__VS_VCVARS64%" == "1" goto :make
 
 set __VS_LOCATION=%ProgramFiles(x86)%\Microsoft Visual Studio\2019
