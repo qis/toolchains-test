@@ -1,5 +1,5 @@
-#include <catch.hpp>
 #include <fmt/format.h>
+#include <gtest/gtest.h>
 #include <chrono>
 #include <string>
 
@@ -33,13 +33,13 @@ struct fmt::formatter<std::chrono::duration<Rep, Period>> : fmt::formatter<std::
   }
 };
 
-TEST_CASE("fmt::chrono") {
+TEST(fmt, chrono) {
   using namespace std::literals::chrono_literals;
-  REQUIRE(fmt::format("{}", 42s + 100ms) == "00:00:42.100");
+  ASSERT_EQ(fmt::format("{}", 42s + 100ms), "00:00:42.100");
 }
 
-TEST_CASE("fmt::lib") {
+TEST(fmt, lib) {
   // Use a function from the compiled library.
   // fmt::v5::internal::char_traits<char>::format_float<double>(char*, unsigned __int64, const char*, int, double)
-  REQUIRE(fmt::format("{:.1f}", 0.123) == "0.1");
+  ASSERT_EQ(fmt::format("{:.1f}", 0.123), "0.1");
 }

@@ -1,12 +1,12 @@
 #include <cstdlib>  // include before <gif_lib.h> to fix `reallocarray` declaration
 
-#include <catch.hpp>
 #include <gif_lib.h>
+#include <gtest/gtest.h>
 
-TEST_CASE("giflib::open") {
+TEST(giflib, open) {
   int error = E_GIF_SUCCEEDED;
   OutputFunc write = [](GifFileType* gif, const GifByteType* data, int size) -> int {
     return size;
   };
-  REQUIRE(EGifOpen(nullptr, write, &error) != nullptr);
+  ASSERT_NE(EGifOpen(nullptr, write, &error), nullptr);
 }

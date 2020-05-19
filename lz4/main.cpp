@@ -1,7 +1,7 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <lz4.h>
 #include <string>
 
-TEST_CASE("lz4::version") {
-  REQUIRE(LZ4_versionNumber() > 0);
+TEST(lz4, version) {
+  ASSERT_GT(LZ4_versionNumber(), 0);
 }

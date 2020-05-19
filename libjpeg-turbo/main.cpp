@@ -1,8 +1,8 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <turbojpeg.h>
 
-TEST_CASE("libjpeg-turbo::init") {
+TEST(libjpeg_turbo, init) {
   tjhandle jpeg = tjInitCompress();
-  REQUIRE(jpeg != nullptr);
-  REQUIRE(tjDestroy(jpeg) == 0);
+  ASSERT_NE(jpeg, nullptr);
+  ASSERT_EQ(tjDestroy(jpeg), 0);
 }

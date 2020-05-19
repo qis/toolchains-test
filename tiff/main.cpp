@@ -1,16 +1,16 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <tiffio.h>
 #include <filesystem>
 
 #include <iostream>
 
-TEST_CASE("tiff::open") {
+TEST(tiff, open) {
   std::cout << std::filesystem::current_path() << std::endl;
 
   const auto filename = "tiff/test.tiff";
-  REQUIRE(std::filesystem::is_regular_file(filename));
+  ASSERT_TRUE(std::filesystem::is_regular_file(filename));
 
   const auto tiff = TIFFOpen(filename, "r");
-  REQUIRE(tiff != nullptr);
+  ASSERT_NE(tiff, nullptr);
   TIFFClose(tiff);
 }

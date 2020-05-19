@@ -19,15 +19,15 @@
 #define LOG_PATTERN "[%Y-%m-%d %T.%e] [%^%L%$] %v"
 #endif
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <spdlog/async.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <string>
 
-TEST_CASE("spdlog::init") {
+TEST(spdlog, init) {
   spdlog::init_thread_pool(8192, 1);
   spdlog::set_pattern(LOG_PATTERN, spdlog::pattern_time_type::local);
   spdlog::set_level(spdlog::level::trace);
   spdlog::flush_on(spdlog::level::trace);
-  REQUIRE(spdlog::default_logger() != nullptr);
+  ASSERT_NE(spdlog::default_logger(), nullptr);
 }

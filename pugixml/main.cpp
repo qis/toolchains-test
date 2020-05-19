@@ -1,8 +1,8 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <pugixml.hpp>
 
-TEST_CASE("pugixml::parse") {
+TEST(pugixml, parse) {
   pugi::xml_document doc;
-  REQUIRE(doc.load_string("<data><node>test</node></data>"));
-  REQUIRE(strcmp(doc.child("data").child("node").text().as_string(), "test") == 0);
+  ASSERT_TRUE(doc.load_string("<data><node>test</node></data>"));
+  ASSERT_EQ(strcmp(doc.child("data").child("node").text().as_string(), "test"), 0);
 }

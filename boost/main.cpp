@@ -1,8 +1,8 @@
 #include <boost/filesystem.hpp>
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <string>
 
-TEST_CASE("boost::filesystem") {
+TEST(boost, filesystem) {
   const auto path = boost::filesystem::current_path();
-  REQUIRE(!path.empty());
+  ASSERT_FALSE(path.empty());
 }

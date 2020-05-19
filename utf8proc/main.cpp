@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <utf8proc.h>
 #include <random>
 #include <string>
@@ -17,17 +17,17 @@ const std::u32string dst = []() {
   return dst;
 }();
 
-TEST_CASE("utf8proc::convert") {
+TEST(utf8proc, convert) {
   const auto data = reinterpret_cast<const utf8proc_uint8_t*>(src.data());
   const auto size = static_cast<utf8proc_ssize_t>(src.size());
   utf8proc_int32_t cp = 0;
   std::u32string str;
   for (auto it = data; it < data + size;) {
     const auto result = utf8proc_iterate(it, data + size - it, &cp);
-    REQUIRE(result > 0);
+    ASSERT_GT(result, 0);
     str.push_back(static_cast<char32_t>(cp));
     it += result;
   }
-  REQUIRE(str.size() == 29);
-  REQUIRE(str == dst);
+  ASSERT_EQ(str.size(), 29);
+  ASSERT_EQ(str, dst);
 }

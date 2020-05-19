@@ -1,4 +1,4 @@
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <openssl/crypto.h>
 #include <openssl/err.h>
 #include <openssl/ssl.h>
@@ -14,13 +14,13 @@ const auto g_init = []() {
   return true;
 }();
 
-TEST_CASE("openssl::crypto") {
+TEST(openssl, crypto) {
   const auto data = OPENSSL_malloc(128);
-  REQUIRE(data != nullptr);
+  ASSERT_NE(data, nullptr);
   OPENSSL_free(data);
 }
 
-TEST_CASE("openssl::ssl") {
+TEST(openssl, ssl) {
   const auto method = SSLv23_method();
-  REQUIRE(method != nullptr);
+  ASSERT_NE(method, nullptr);
 }
