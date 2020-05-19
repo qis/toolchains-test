@@ -7,7 +7,7 @@ all/linux:
 
 all/windows:
 	@$(MAKE) /nologo -f makefile.triplet system=$(system) triplet=x64-windows-msvc
-	@$(MAKE) /nologo -f makefile.triplet system=$(system) triplet=x64-windows-llvm
+#	@$(MAKE) /nologo -f makefile.triplet system=$(system) triplet=x64-windows-llvm
 
 install: install/$(system)
 
@@ -16,7 +16,7 @@ install/linux:
 
 install/windows:
 	@$(MAKE) /nologo -f makefile.triplet system=$(system) overlay=C:\Workspace\ports triplet=x64-windows-msvc install
-	@$(MAKE) /nologo -f makefile.triplet system=$(system) overlay=C:\Workspace\ports triplet=x64-windows-llvm install
+#	@$(MAKE) /nologo -f makefile.triplet system=$(system) overlay=C:\Workspace\ports triplet=x64-windows-llvm install
 
 run: run/$(system)
 
@@ -25,7 +25,7 @@ run/linux:
 
 run/windows:
 	@$(MAKE) /nologo -f makefile.triplet system=$(system) triplet=x64-windows-msvc run
-	@$(MAKE) /nologo -f makefile.triplet system=$(system) triplet=x64-windows-llvm run
+#	@$(MAKE) /nologo -f makefile.triplet system=$(system) triplet=x64-windows-llvm run
 
 format:
 	@cmake -P format.cmake
