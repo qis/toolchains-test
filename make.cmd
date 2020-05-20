@@ -16,4 +16,4 @@ set __VS_LOCATION=
 set __VS_EDITIONS=
 
 :make
-nmake /nologo system=windows %*
+nmake /nologo MAKE="nmake /nologo" system=windows %*
