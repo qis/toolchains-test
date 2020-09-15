@@ -8,7 +8,6 @@
 !/.editorconfig
 !/.gitattributes
 !/.gitignore
-!/check.cmake
 !/CMakeLists.txt
 !/CMakeSettings.json
 !/license.txt

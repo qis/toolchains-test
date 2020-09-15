@@ -2,7 +2,8 @@
 #include <zlib.h>
 #include <string>
 
-TEST(zlib, crc32) {
+TEST(zlib, crc32)
+{
   const std::string src = "test";
   const auto data = reinterpret_cast<const Bytef*>(src.data());
   const auto size = static_cast<uInt>(src.size());

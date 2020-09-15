@@ -4,7 +4,8 @@
 
 #include <iostream>
 
-TEST(tiff, open) {
+TEST(tiff, open)
+{
   std::cout << std::filesystem::current_path() << std::endl;
 
   const auto filename = "test.tiff";

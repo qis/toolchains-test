@@ -2,7 +2,8 @@
 #include <lzma.h>
 #include <string>
 
-TEST(liblzma, crc64) {
+TEST(liblzma, crc64)
+{
   const std::string src = "test";
   const auto data = reinterpret_cast<const uint8_t*>(src.data());
   const auto size = src.size();

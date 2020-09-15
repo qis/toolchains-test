@@ -17,7 +17,8 @@ const std::u32string dst = []() {
   return dst;
 }();
 
-TEST(utf8proc, convert) {
+TEST(utf8proc, convert)
+{
   const auto data = reinterpret_cast<const utf8proc_uint8_t*>(src.data());
   const auto size = static_cast<utf8proc_ssize_t>(src.size());
   utf8proc_int32_t cp = 0;

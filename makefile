@@ -4,10 +4,7 @@ system = linux
 # Settings
 VERBOSE = OFF
 
-all: clean \
-  build/$(system)/multi/rules.ninja \
-  build/$(system)/debug/rules.ninja \
-  build/$(system)/release/rules.ninja
+all: clean build/$(system)/multi/rules.ninja build/$(system)/debug/rules.ninja build/$(system)/release/rules.ninja
 	@cmake -E echo "Building Ninja Multi-Config Debug..."
 	@cmake --build build/$(system)/multi --config Debug > build/$(system)/md.log
 	@cmake -E echo "Building Ninja Multi-Config Release..."
@@ -16,11 +13,13 @@ all: clean \
 	@cmake --build build/$(system)/debug > build/$(system)/nd.log
 	@cmake -E echo "Building Ninja Release..."
 	@cmake --build build/$(system)/release > build/$(system)/nr.log
-	@cmake -E echo ""
-	@cmake -DGENERATOR="Ninja Multi-Config" -DCONFIG="Debug" -DLOG=build/$(system)/md.log -P check.cmake
-	@cmake -DGENERATOR="Ninja Multi-Config" -DCONFIG="Release" -DLOG=build/$(system)/mr.log -P check.cmake
-	@cmake -DGENERATOR="Ninja" -DCONFIG="Debug" -DLOG=build/$(system)/nd.log -P check.cmake
-	@cmake -DGENERATOR="Ninja" -DCONFIG="Release" -DLOG=build/$(system)/nr.log -P check.cmake
+
+check:
+	@cmake -DGENERATOR="Ninja Multi-Config" -DCONFIG="Debug" -DLOG=build/$(system)/md.log -P src/check.cmake
+	@cmake -DGENERATOR="Ninja Multi-Config" -DCONFIG="Release" -DLOG=build/$(system)/mr.log -P src/check.cmake
+	@cmake -DGENERATOR="Ninja" -DCONFIG="Debug" -DLOG=build/$(system)/nd.log -P src/check.cmake
+	@cmake -DGENERATOR="Ninja" -DCONFIG="Release" -DLOG=build/$(system)/nr.log -P src/check.cmake
+	@cmake -E echo "All configurations use correct libraries."
 
 test:
 	@cmake -E chdir build/$(system)/multi ctest --config Debug

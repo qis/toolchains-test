@@ -2,7 +2,8 @@
 #include <zstd.h>
 #include <string>
 
-TEST(zstd, compress) {
+TEST(zstd, compress)
+{
   const std::string src = "test";
   std::string dst;
   dst.resize(ZSTD_compressBound(src.size()));

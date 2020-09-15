@@ -2,7 +2,8 @@
 #include <harfbuzz/hb.h>
 #include <filesystem>
 
-TEST(harfbuzz, data) {
+TEST(harfbuzz, data)
+{
   const auto filename = "font.ttf";
   ASSERT_TRUE(std::filesystem::is_regular_file(filename));
 

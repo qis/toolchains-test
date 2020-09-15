@@ -3,7 +3,8 @@
 #include <random>
 #include <vector>
 
-static void benchmark_test(benchmark::State& state) {
+static void benchmark_test(benchmark::State& state)
+{
   thread_local std::random_device rd;
   thread_local std::uniform_int_distribution<int> dist(0, std::numeric_limits<int>::max());
   std::vector<int> v(1000);

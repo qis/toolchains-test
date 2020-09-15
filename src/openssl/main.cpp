@@ -14,13 +14,15 @@ const auto g_init = []() {
   return true;
 }();
 
-TEST(openssl, crypto) {
+TEST(openssl, crypto)
+{
   const auto data = OPENSSL_malloc(128);
   ASSERT_TRUE(data);
   OPENSSL_free(data);
 }
 
-TEST(openssl, ssl) {
+TEST(openssl, ssl)
+{
   const auto method = SSLv23_method();
   ASSERT_TRUE(method);
 }

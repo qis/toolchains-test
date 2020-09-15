@@ -29,5 +29,5 @@ foreach(line ${LOG})
 endforeach()
 
 if(NOT SUCCESS)
-  message(FATAL_ERROR "${GENERATOR} ${CONFIG} uses wrong symbols.")
+  message(FATAL_ERROR "${GENERATOR} ${CONFIG} uses wrong libraries.")
 endif()

@@ -4,7 +4,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
-TEST(freetype, load) {
+TEST(freetype, load)
+{
   const auto filename = "font.ttf";
   ASSERT_TRUE(std::filesystem::is_regular_file(filename));
 
