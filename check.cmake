@@ -1,0 +1,33 @@
+set(TRIPLET $ENV{VCPKG_DEFAULT_TRIPLET})
+if(NOT TRIPLET)
+  message(FATAL_ERROR "Could not read VCPKG_DEFAULT_TRIPLET environment variable.")
+endif()
+
+if(NOT EXISTS ${LOG})
+  message(FATAL_ERROR "Missing log: ${LOG}")
+endif()
+
+file(READ ${LOG} LOG)
+string(REPLACE ";" "\\\\;" LOG "${LOG}")
+string(REPLACE "\n" ";" LOG "${LOG}")
+
+if(CONFIG MATCHES "Debug")
+  set(FORBIDDEN "installed/x64-windows-ipo/lib")
+else()
+  set(FORBIDDEN "installed/x64-windows-ipo/debug")
+endif()
+
+set(SUCCESS ON)
+foreach(line ${LOG})
+  string(REGEX REPLACE "\\\\" "/" line "${line}")
+  string(REGEX REPLACE "/+" "/" line "${line}")
+  string(FIND "${line}" "${FORBIDDEN}" FOUND)
+  if(FOUND GREATER_EQUAL 0)
+    message("${line}")
+    set(SUCCESS OFF)
+  endif()
+endforeach()
+
+if(NOT SUCCESS)
+  message(FATAL_ERROR "${GENERATOR} ${CONFIG} uses wrong symbols.")
+endif()
