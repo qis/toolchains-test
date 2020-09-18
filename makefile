@@ -1,8 +1,5 @@
-# System
 system = linux
-
-# Settings
-VERBOSE = ON
+checks = ON
 
 all: clean build/$(system)/multi/rules.ninja build/$(system)/debug/rules.ninja build/$(system)/release/rules.ninja
 	@cmake -E echo "Building Ninja Multi-Config Debug..."
@@ -42,7 +39,7 @@ build/windows/multi/rules.ninja: CMakeLists.txt
 	@cmake -E make_directory build/windows/multi/check
 	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Debug \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)\triplets\toolchains\windows.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
+	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/windows/multi
 	@cmake -E echo ""
 
@@ -51,7 +48,7 @@ build/linux/multi/rules.ninja: CMakeLists.txt
 	@cmake -E make_directory build/linux/multi/check
 	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Debug \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/linux.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
+	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/linux/multi
 	@cmake -E echo ""
 
@@ -60,7 +57,7 @@ build/windows/debug/rules.ninja: CMakeLists.txt
 	@cmake -E make_directory build/windows/debug/check
 	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Debug \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)\triplets\toolchains\windows.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
+	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/windows/debug
 	@cmake -E echo ""
 
@@ -69,7 +66,7 @@ build/windows/release/rules.ninja: CMakeLists.txt
 	@cmake -E make_directory build/windows/release/check
 	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Release \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)\triplets\toolchains\windows.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
+	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/windows/release
 	@cmake -E echo ""
 
@@ -78,7 +75,7 @@ build/linux/debug/rules.ninja: CMakeLists.txt
 	@cmake -E make_directory build/linux/debug/check
 	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Debug \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/linux.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
+	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/linux/debug
 	@cmake -E echo ""
 
@@ -87,6 +84,6 @@ build/linux/release/rules.ninja: CMakeLists.txt
 	@cmake -E make_directory build/linux/release/check
 	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Release \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/linux.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(VERBOSE) \
+	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/linux/release
 	@cmake -E echo ""
