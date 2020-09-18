@@ -16,7 +16,9 @@ check:
 	@cmake -DGENERATOR="Ninja Multi-Config" -DCONFIG="Release" -DLOG=build/$(system)/mr.log -P src/check.cmake
 	@cmake -DGENERATOR="Ninja" -DCONFIG="Debug" -DLOG=build/$(system)/nd.log -P src/check.cmake
 	@cmake -DGENERATOR="Ninja" -DCONFIG="Release" -DLOG=build/$(system)/nr.log -P src/check.cmake
+	@cmake -E echo ""
 	@cmake -E echo "All configurations use correct libraries."
+	@cmake -E echo ""
 
 test:
 	@cmake -E chdir build/$(system)/multi ctest --config Debug
