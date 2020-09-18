@@ -2,7 +2,7 @@
 system = linux
 
 # Settings
-VERBOSE = OFF
+VERBOSE = ON
 
 all: clean build/$(system)/multi/rules.ninja build/$(system)/debug/rules.ninja build/$(system)/release/rules.ninja
 	@cmake -E echo "Building Ninja Multi-Config Debug..."
