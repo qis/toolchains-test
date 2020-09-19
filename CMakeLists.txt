@@ -17,6 +17,7 @@ endfunction()
 add_subdirectory(src/openssl)
 
 # Compression
+add_subdirectory(src/brotli)
 add_subdirectory(src/bzip2)
 add_subdirectory(src/liblzma)
 add_subdirectory(src/libzip)
