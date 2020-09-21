@@ -1,7 +1,9 @@
 system = linux
 checks = ON
 
-all: clean build/$(system)/multi/rules.ninja build/$(system)/debug/rules.ninja build/$(system)/release/rules.ninja
+all: clean run
+
+run: build/$(system)/multi/rules.ninja build/$(system)/debug/rules.ninja build/$(system)/release/rules.ninja
 	@cmake -E echo "Building Ninja Multi-Config Debug..."
 	@cmake --build build/$(system)/multi --config Debug > build/$(system)/md.log
 	@cmake -E echo "Building Ninja Multi-Config Release..."
@@ -10,8 +12,6 @@ all: clean build/$(system)/multi/rules.ninja build/$(system)/debug/rules.ninja b
 	@cmake --build build/$(system)/debug > build/$(system)/nd.log
 	@cmake -E echo "Building Ninja Release..."
 	@cmake --build build/$(system)/release > build/$(system)/nr.log
-
-check:
 	@cmake -DGENERATOR="Ninja Multi-Config" -DCONFIG="Debug" -DLOG=build/$(system)/md.log -P src/check.cmake
 	@cmake -DGENERATOR="Ninja Multi-Config" -DCONFIG="Release" -DLOG=build/$(system)/mr.log -P src/check.cmake
 	@cmake -DGENERATOR="Ninja" -DCONFIG="Debug" -DLOG=build/$(system)/nd.log -P src/check.cmake
@@ -19,15 +19,16 @@ check:
 	@cmake -E echo ""
 	@cmake -E echo "All configurations use correct libraries."
 	@cmake -E echo ""
-
-test:
-	@cmake -E chdir build/$(system)/multi cmake -E env GTEST_COLOR=1 ctest --config Debug
-	@cmake -E chdir build/$(system)/multi cmake -E env GTEST_COLOR=1 ctest --config Release
-	@cmake -E chdir build/$(system)/debug cmake -E env GTEST_COLOR=1 ctest
-	@cmake -E chdir build/$(system)/release cmake -E env GTEST_COLOR=1 ctest
-
-benchmark:
+	@cmake -E chdir build/$(system)/multi ctest --progress --output-on-failure -C Debug
+	@cmake -E echo ""
+	@cmake -E chdir build/$(system)/multi ctest --progress --output-on-failure -C Release
+	@cmake -E echo ""
+	@cmake -E chdir build/$(system)/debug ctest --progress --output-on-failure
+	@cmake -E echo ""
+	@cmake -E chdir build/$(system)/release ctest --progress --output-on-failure
+	@cmake -E echo ""
 	@cmake -E chdir build/$(system)/multi/src/benchmark/Release ./vcpkg-test-benchmark
+	@cmake -E echo ""
 	@cmake -E chdir build/$(system)/release/src/benchmark ./vcpkg-test-benchmark
 
 format:
