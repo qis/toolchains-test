@@ -30,7 +30,6 @@ add_subdirectory(src/dtz)
 add_subdirectory(src/fmt)
 add_subdirectory(src/libssh2)
 add_subdirectory(src/pugixml)
-add_subdirectory(src/spdlog)
 add_subdirectory(src/tbb)
 add_subdirectory(src/utf8proc)
 

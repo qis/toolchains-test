@@ -39,7 +39,7 @@ clean:
 build/windows/multi/rules.ninja: CMakeLists.txt
 	@cmake -E echo "Ninja Multi-Config:"
 	@cmake -E make_directory build/windows/multi/check
-	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Debug \
+	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)\triplets\toolchains\windows.cmake" \
 	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/windows/multi
@@ -48,7 +48,7 @@ build/windows/multi/rules.ninja: CMakeLists.txt
 build/linux/multi/rules.ninja: CMakeLists.txt
 	@cmake -E echo "Ninja Multi-Config:"
 	@cmake -E make_directory build/linux/multi/check
-	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_BUILD_TYPE=Debug \
+	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
 	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/linux.cmake" \
 	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
 	  -B build/linux/multi
