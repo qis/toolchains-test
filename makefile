@@ -21,10 +21,10 @@ check:
 	@cmake -E echo ""
 
 test:
-	@cmake -E chdir build/$(system)/multi ctest --config Debug
-	@cmake -E chdir build/$(system)/multi ctest --config Release
-	@cmake -E chdir build/$(system)/debug ctest
-	@cmake -E chdir build/$(system)/release ctest
+	@cmake -E chdir build/$(system)/multi cmake -E env GTEST_COLOR=1 ctest --config Debug
+	@cmake -E chdir build/$(system)/multi cmake -E env GTEST_COLOR=1 ctest --config Release
+	@cmake -E chdir build/$(system)/debug cmake -E env GTEST_COLOR=1 ctest
+	@cmake -E chdir build/$(system)/release cmake -E env GTEST_COLOR=1 ctest
 
 benchmark:
 	@cmake -E chdir build/$(system)/multi/src/benchmark/Release ./vcpkg-test-benchmark
