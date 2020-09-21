@@ -36,56 +36,29 @@ format:
 clean:
 	@cmake -E remove_directory build/$(system)
 
-build/windows/multi/rules.ninja: CMakeLists.txt
+build/$(system)/multi/rules.ninja: CMakeLists.txt
 	@cmake -E echo "Ninja Multi-Config:"
-	@cmake -E make_directory build/windows/multi/check
+	@cmake -E make_directory build/$(system)/multi/check
 	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
-	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)\triplets\toolchains\windows.cmake" \
+	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/$(system).cmake" \
 	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
-	  -B build/windows/multi
+	  -B build/$(system)/multi
 	@cmake -E echo ""
 
-build/linux/multi/rules.ninja: CMakeLists.txt
-	@cmake -E echo "Ninja Multi-Config:"
-	@cmake -E make_directory build/linux/multi/check
-	@cmake -E time cmake -G "Ninja Multi-Config" -DCMAKE_CONFIGURATION_TYPES="Debug;Release" \
-	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/linux.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
-	  -B build/linux/multi
-	@cmake -E echo ""
-
-build/windows/debug/rules.ninja: CMakeLists.txt
+build/$(system)/debug/rules.ninja: CMakeLists.txt
 	@cmake -E echo "Ninja Debug:"
-	@cmake -E make_directory build/windows/debug/check
+	@cmake -E make_directory build/$(system)/debug/check
 	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Debug \
-	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)\triplets\toolchains\windows.cmake" \
+	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/$(system).cmake" \
 	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
-	  -B build/windows/debug
+	  -B build/$(system)/debug
 	@cmake -E echo ""
 
-build/windows/release/rules.ninja: CMakeLists.txt
+build/$(system)/release/rules.ninja: CMakeLists.txt
 	@cmake -E echo "Ninja Release:"
-	@cmake -E make_directory build/windows/release/check
+	@cmake -E make_directory build/$(system)/release/check
 	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Release \
-	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)\triplets\toolchains\windows.cmake" \
+	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/$(system).cmake" \
 	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
-	  -B build/windows/release
-	@cmake -E echo ""
-
-build/linux/debug/rules.ninja: CMakeLists.txt
-	@cmake -E echo "Ninja Debug:"
-	@cmake -E make_directory build/linux/debug/check
-	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Debug \
-	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/linux.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
-	  -B build/linux/debug
-	@cmake -E echo ""
-
-build/linux/release/rules.ninja: CMakeLists.txt
-	@cmake -E echo "Ninja Release:"
-	@cmake -E make_directory build/linux/release/check
-	@cmake -E time cmake -GNinja -DCMAKE_BUILD_TYPE=Release \
-	  -DCMAKE_TOOLCHAIN_FILE="$(VCPKG_ROOT)/triplets/toolchains/linux.cmake" \
-	  -DCMAKE_VERBOSE_MAKEFILE=$(checks) \
-	  -B build/linux/release
+	  -B build/$(system)/release
 	@cmake -E echo ""
